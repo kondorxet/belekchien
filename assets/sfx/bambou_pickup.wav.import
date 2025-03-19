@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bambou_pickup.wav-1f670342cd0727a05cae7700799f5136.sample"
+
+[deps]
+
+source_file="res://assets/sfx/bambou_pickup.wav"
+dest_files=[ "res://.import/bambou_pickup.wav-1f670342cd0727a05cae7700799f5136.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

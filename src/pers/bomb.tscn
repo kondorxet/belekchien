@@ -1,0 +1,171 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/projet jeu  copy/bombeur.png" type="Texture" id=1]
+[ext_resource path="res://src/pers/bomb.gd" type="Script" id=2]
+[ext_resource path="res://assets/projet jeu  copy/explosion.png" type="Texture" id=3]
+[ext_resource path="res://assets/sfx/Explosion.wav" type="AudioStream" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 17 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 18, 18 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "DefaultStart"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Explosion:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Explosion:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("BombSprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Explosion"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Explosion:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Explosion:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 0.307786, 0.153893 ),
+"update": 0,
+"values": [ Vector2( 0.140625, 0.125 ), Vector2( 2.6, 2.6 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Explosion:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("BombSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 1.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[node name="Bomb" type="KinematicBody2D"]
+position = Vector2( -4, 0 )
+scale = Vector2( 1.2, 1.2 )
+collision_layer = 2
+collision_mask = 9
+script = ExtResource( 2 )
+
+[node name="BombSprite" type="Sprite" parent="."]
+position = Vector2( 49, -61 )
+scale = Vector2( 3.6, 3.6 )
+texture = ExtResource( 1 )
+offset = Vector2( 2.07047, 11.4964 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 55, -4 )
+shape = SubResource( 1 )
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+visible = false
+modulate = Color( 1, 0.631373, 0, 1 )
+position = Vector2( 55, 6 )
+scale = Vector2( 0.4, 0.35 )
+rect = Rect2( -40, -10, 20, 20 )
+process_parent = true
+physics_process_parent = true
+
+[node name="KillZone" type="Area2D" parent="."]
+position = Vector2( 40, 8 )
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+modulate = Color( 0.27451, 0.0431373, 1, 1 )
+position = Vector2( 15, -12 )
+shape = SubResource( 2 )
+
+[node name="Explosion" type="Sprite" parent="."]
+position = Vector2( 60, -15 )
+scale = Vector2( 0.140625, 0.125 )
+texture = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "DefaultStart"
+anims/DefaultStart = SubResource( 3 )
+anims/Explosion = SubResource( 4 )
+
+[node name="explosionSound" type="Node" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="explosionSound"]
+stream = ExtResource( 4 )
+volume_db = -2.375
+[connection signal="tree_entered" from="CollisionShape2D" to="." method="_on_CollisionShape2D_tree_entered"]
+[connection signal="area_entered" from="KillZone" to="." method="_on_KillZone_area_entered"]
+[connection signal="body_entered" from="KillZone" to="." method="_on_KillZone_body_entered"]
